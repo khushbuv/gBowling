@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bowling Game</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#btn_roll").click(function() {
+			$.ajax({
+				url : "http://localhost:8080/roll"
+			}).then(function(data) {
+				$('#total_score').val(data.totalscore);
+				$('#number_pins').val(data.numberOfPins);
+				$('#number_rolls').val(data.rollnumber);
+			});
+		});
+	});
+</script>
+</head>
+
+<body>
+	<h3 style="text-align: center;">Bowling Game</h3>
+	<div class="form-group row">
+		<br> <br>
+		<div class="col-sm-9">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="totalscore"
+				class="col-sm-2 col-form-label col-form-label-sm"
+				style="text-align: center;">Score is: </label> <input type="text"
+				class="form-control form-control-sm" id="total_score"
+				placeholder="total score"> <br> <br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="numberOfPins"
+				class="col-sm-2 col-form-label col-form-label-sm">Pins
+				Down: </label> <input type="text" class="form-control form-control-sm"
+				id="number_pins" placeholder="pins down"> <br> <br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="thrownumber"
+				class="col-sm-2 col-form-label col-form-label-sm">No. of throws </label>
+				<input type="text" class="form-control form-control-sm"
+				id="number_rolls" placeholder="throw number"> <br> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="submit" class="btn btn-success" id="btn_roll">Roll</button>
+
+			<p>After 20th throw score will reset</p>
+		</div>
+	</div>
+</body>
+</html>
