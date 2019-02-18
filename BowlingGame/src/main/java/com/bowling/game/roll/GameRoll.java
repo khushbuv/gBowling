@@ -21,7 +21,7 @@ public class GameRoll {
 
 	public Game roll() {
 		throwNumber++;
-		if(throwNumber==21) {
+		if(throwNumber==22) {
 			bowlingScore.reset();
 			throwNumber=0;
 			rollPerFrame=0;

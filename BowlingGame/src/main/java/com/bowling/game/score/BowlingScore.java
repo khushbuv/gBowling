@@ -6,9 +6,9 @@ public class BowlingScore {
 	private int presentRoll = 0;
 
 	private int totalScore = 0;
-	
+
 	public void reset() {
-		presentRoll=0;
+		presentRoll = 0;
 		totalScore = 0;
 	}
 
@@ -17,10 +17,10 @@ public class BowlingScore {
 		if (presentRoll < 21) {
 
 			pinsDown[presentRoll] = pins;
-
+			updateScore(rollPerFrame);
 		} else
 			return 0;
-		updateScore(rollPerFrame);
+		
 		presentRoll++;
 		return pins;
 	}
@@ -28,35 +28,44 @@ public class BowlingScore {
 	public void updateScore(int rollPerFrame) {
 		if (isStrike(presentRoll)) {
 			totalScore += 10;
-			if (presentRoll > 0 && isStrike(presentRoll - 1)) {
-				totalScore += pinsDown[presentRoll];
-			} else if (presentRoll > 1 && isStrike(presentRoll - 2))
+		}
+		if (presentRoll > 0) {
+			if (isStrike(presentRoll - 1) && isStrike(presentRoll)) {
+				totalScore += 10;
+			} else if (isStrike(presentRoll - 1) && !isStrike(presentRoll)) {
 				totalScore += 2 * pinsDown[presentRoll];
-
-		} else if (presentRoll > 0) {
-			if (isStrike(presentRoll - 1)) {
-				totalScore += 2 * pinsDown[presentRoll];
-			} else if (presentRoll > 1 && isStrike(presentRoll - 2))
-				totalScore += 2 * pinsDown[presentRoll];
-			else if (isSpare(presentRoll - 1) && rollPerFrame == 0) {
-				totalScore += 2 * pinsDown[presentRoll];
-			} else {
+			} else if (!isStrike(presentRoll) && presentRoll <2) {
 				totalScore += pinsDown[presentRoll];
 			}
-		} else {
+		} else if (!isStrike(presentRoll)) {
 			totalScore += pinsDown[presentRoll];
+		}
+		if (presentRoll > 1) {
+			if (isStrike(presentRoll - 2) && isStrike(presentRoll)) {
+				totalScore += 10;
+			} else if (isStrike(presentRoll - 2) && !isStrike(presentRoll)) {
+				totalScore += 2 * pinsDown[presentRoll];
+			} else if (isSpare(presentRoll - 1) && rollPerFrame == 0) {
+				totalScore += 2 * pinsDown[presentRoll];
+			}  else if (!isStrike(presentRoll) && !isStrike(presentRoll - 1)) {
+				totalScore += pinsDown[presentRoll];
+			}
+		} 
+		if (totalScore == 330) {
+			totalScore -= 30;
+		} else if(presentRoll==20 && isSpare(presentRoll-1)) {
+			totalScore -= pinsDown[presentRoll];
 		}
 
 	}
+	
 
 	public int totalScore() {
 		return totalScore;
 	}
 
 	private boolean isSpare(int pr) {
-		if (pr >= 1)
-			return pinsDown[pr] + pinsDown[pr - 1] == 10;
-		return false;
+		return pinsDown[pr] + pinsDown[pr - 1] == 10;
 	}
 
 	private boolean isStrike(int pr) {
